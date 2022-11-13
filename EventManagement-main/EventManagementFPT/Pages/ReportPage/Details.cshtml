@@ -1,0 +1,69 @@
+﻿@page
+@using EventManagementFPT.Model
+@model EventManagementFPT.Pages.ReportPage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div style="height: calc(100vh - 150px);" class="d-flex justify-content-center align-items-center">
+    <div class="shadow card p4 border border-rounded" style="width: 40vw;">
+        <div class="card-header d-flex justify-content-between" style="gap: 8px;">
+            <h3 class="text-break">Report's title</h3>
+            @if (Model.Report.Status == ReportEnum.Unprocess)
+            {
+                <div class="d-flex align-items-center">
+                    <ion-icon class="mr-1" name="ellipse" style="color: #dc3545!important; font-size: 16px;"></ion-icon>
+                    <span class="text-muted">Unprocessed</span>
+                </div>
+            }
+            else if (Model.Report.Status == ReportEnum.Processing)
+            {
+                <div class="d-flex align-items-center">
+                    <ion-icon class="mr-1" name="ellipse" style="color: #ffc107!important; font-size: 16px;"></ion-icon>
+                    <span class="text-muted">Processing</span>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex align-items-center">
+                    <ion-icon class="mr-1" name="ellipse" style="color: #28a745!important; font-size: 16px;"></ion-icon>
+                    <span class="text-muted">Processed</span>
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            <div class="card-title d-flex align-items-center text-muted">
+                <ion-icon name="person-circle" class="mr-1"></ion-icon>
+                <span>@Model.Report.AuthorNavigation.Name &#x2022; <span style="font-size: 14px;">@Model.Report.CreateDate</span></span>
+            </div>
+            <p class="card-text">
+                @Model.Report.Content
+            </p>
+        </div>
+        <div class="card-footer d-flex" style="gap: 8px;">
+            @if (Model.Report.Status == ReportEnum.Unprocess)
+            {
+                <a class="btn btn-warning d-flex align-items-center" asp-page="/ReportPage/Edit" asp-route-id="@Model.Report.ReportId" asp-route-status="2" asp-route-type="edit">
+                    <ion-icon name="caret-forward" class="mr-1" style="color: white;"></ion-icon>
+                    Start processing
+                </a>
+            }
+            else if (Model.Report.Status == ReportEnum.Processing)
+            {
+                <a class="btn btn-danger d-flex align-items-center" asp-page="/ReportPage/Edit" asp-route-id="@Model.Report.ReportId" asp-route-status="1" asp-route-type="edit">
+                    <ion-icon name="play-back-circle" class="mr-1" style="color: white;"></ion-icon>
+                    Revert back
+                </a>
+            }
+            <a class="btn btn-success d-flex align-items-center" asp-page="/ReportPage/Edit" asp-route-id="@Model.Report.ReportId" asp-route-status="3" asp-route-type="edit">
+                <ion-icon name="checkmark-done-circle" class="mr-2"></ion-icon>
+                Finish
+            </a>
+            <a class="btn btn-primary d-flex align-items-center ml-auto" asp-page="/EventPage/Details" asp-route-id="@Model.Report.EventId">
+                <ion-icon name="log-out" class="mr-2"></ion-icon>
+                Go to reported content
+            </a>
+        </div>
+    </div>
+</div>
